@@ -1,0 +1,150 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 5%;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e4e4e4;
+  height: 60px;
+  z-index: 1000;
+}
+
+.navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.navbar-logo span {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.navbar-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 24px;
+}
+
+.navbar-links li a {
+  text-decoration: none;
+  color: #262626;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 0;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.navbar-links li a:hover {
+  color: #ffa116;
+}
+
+.navbar-search {
+  position: relative;
+  flex: 0 1 300px;
+  margin: 0 16px;
+}
+
+.navbar-search input {
+  width: 100%;
+  padding: 8px 32px 8px 16px;
+  border: 1px solid #e4e4e4;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #f7f7f7;
+}
+
+.navbar-search input:focus {
+  outline: none;
+  border-color: #ffa116;
+  background-color: #ffffff;
+}
+
+.navbar-auth {
+  display: flex;
+  gap: 12px;
+}
+
+.navbar-auth button {
+  padding: 8px 16px;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.navbar-auth button:first-child {
+  background-color: transparent;
+  border: 1px solid #ffa116;
+  color: #ffa116;
+}
+
+.navbar-auth button:first-child:hover {
+  background-color: rgba(255, 161, 22, 0.1);
+}
+
+.navbar-auth button:last-child {
+  background-color: #ffa116;
+  border: 1px solid #ffa116;
+  color: white;
+}
+
+.navbar-auth button:last-child:hover {
+  background-color: #ff9006;
+}
+
+.menu-icon {
+  display: none;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .navbar {
+    padding: 0 20px;
+  }
+  
+  .navbar-search {
+    flex: 0 1 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+  }
+  
+  .menu-icon {
+    display: block;
+  }
+  
+  .navbar-search {
+    flex: 1;
+    margin: 0 12px;
+  }
+  
+  .navbar-auth button {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar-search {
+    display: none;
+  }
+  
+  .navbar-auth button:first-child {
+    display: none;
+  }
+}

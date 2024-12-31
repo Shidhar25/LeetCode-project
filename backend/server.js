@@ -37,9 +37,27 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  difficulty: {
+    type: String,
+    enum: ['Easy', 'Medium', 'Hard'],
+    default: 'Easy'
+  },
+  isPremium: {
+    type: Boolean,
+    default: false
+  },
+  status: {
+    type: String,
+    enum: ['Solved', 'Attempted', null],
+    default: null
+  },
   testCases: {
     type: [String],
     default: []
+  },
+  acceptance: {
+    type: String,
+    default: "0%"
   }
 });
 
@@ -96,23 +114,45 @@ app.post("/signin", async (req, res) => {
 
 app.post('/api/questions', async (req, res) => {
   try {
-    const { title, description, testCases } = req.body;
+    const { 
+      title, 
+      description, 
+      difficulty = 'Easy',
+      isPremium = false,
+      testCases = [],
+      acceptance = "0%" 
+    } = req.body;
     
-    // Add validation
+    // Validation
     if (!title || !description) {
       return res.status(400).json({ error: 'Title and description are required' });
     }
 
+    // Create new question with all fields
     const question = new Question({
       title,
       description,
-      testCases: testCases || []
+      difficulty,
+      isPremium,
+      status: null, // Initially null for new questions
+      testCases,
+      acceptance
     });
 
     const savedQuestion = await question.save();
-    res.status(201).json(savedQuestion);
+    
+    // Return the saved question in the desired format
+    res.status(201).json({
+      _id: savedQuestion._id,
+      title: savedQuestion.title,
+      description: savedQuestion.description,
+      difficulty: savedQuestion.difficulty,
+      isPremium: savedQuestion.isPremium,
+      status: savedQuestion.status,
+      acceptance: savedQuestion.acceptance
+    });
   } catch (error) {
-    console.warn('Error adding question:', error);
+    console.error('Error adding question:', error);
     res.status(500).json({ error: 'Failed to add question' });
   }
 });
@@ -120,7 +160,17 @@ app.post('/api/questions', async (req, res) => {
 app.get('/questions', async (req, res) => {
   try {
     const questions = await Question.find();
-    res.json(questions);
+    // Transform the data to match the desired format
+    const formattedQuestions = questions.map(q => ({
+      _id: q._id,
+      title: q.title,
+      description: q.description,
+      difficulty: q.difficulty,
+      isPremium: q.isPremium,
+      status: q.status,
+      acceptance: q.acceptance
+    }));
+    res.json(formattedQuestions);
   } catch (error) {
     console.error("Error fetching questions:", error);
     res.status(500).json({ message: "Internal server error" });
